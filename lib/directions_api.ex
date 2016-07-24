@@ -64,22 +64,6 @@ defmodule DirectionsApi do
 		end
 	end
 
-	defp prepare_units(default_opts, opts) do
-		if Map.has_key?(opts, :units) do
-			Map.merge(opts, default_opts)
-		else
-			default_opts
-		end
-	end
-
-	defp prepare_mode(default_opts, opts) do
-		if Map.has_key?(opts, :mode) do
-			Map.merge(opts, default_opts)
-		else
-			default_opts
-		end
-	end
-
 	defp prepare_avoid(default_opts, opts) do
 		if Map.has_key?(opts, :avoid) do
 			avoid =
@@ -94,40 +78,41 @@ defmodule DirectionsApi do
 		end
 	end
 
+	defp prepare_units(default_opts, opts) do
+		merge_default_options(default_opts, opts, :units)
+	end
+
+	defp prepare_mode(default_opts, opts) do
+		merge_default_options(default_opts, opts, :mode)
+	end
+
+
 	defp prepare_language(default_opts, opts) do
-		if Map.has_key?(opts, :language) do
-			Map.merge(opts, default_opts)
-		else
-			default_opts
-		end
+		merge_default_options(default_opts, opts, :language)
 	end
 
 	defp prepare_region(default_opts, opts) do
-		if Map.has_key?(opts, :region) do
-			Map.merge(opts, default_opts)
-		else
-			default_opts
-		end
+		merge_default_options(default_opts, opts, :region)
 	end
 
 	defp prepare_arrival_time(default_opts, opts) do
-		if Map.has_key?(opts, :arrival_time) do
-			Map.merge(opts, default_opts)
-		else
-			default_opts
-		end
+		merge_default_options(default_opts, opts, :arrival_time)
 	end
 
 	defp prepare_departure_time(default_opts, opts) do
-		if Map.has_key?(opts, :departure_time) do
-			Map.merge(opts, default_opts)
-		else
-			default_opts
-		end
+		merge_default_options(default_opts, opts, :departure_time)
 	end
 
 	defp endpoint(url) do
 		"https://maps.googleapis.com/maps/api/directions/json?" <> url
+	end
+
+	defp merge_default_options(default_opts, opts, key) do
+		if Map.has_key?(opts, key) do
+			Map.merge(opts, default_opts)
+		else
+			default_opts
+		end
 	end
 
 	defp key do
